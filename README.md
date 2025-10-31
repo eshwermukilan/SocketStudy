@@ -53,6 +53,68 @@ Socket programming finds applications in various domains, including web developm
 4.	Networked Games: Online multiplayer games rely on socket programming to facilitate communication between game clients and servers.
 5.	RPC mechanisms: which allow processes to execute code on a remote server, often use socket programming for communication.
 
+## PROGRAM
+### SERVER:
+```
+import socket
+
+# Server configuration
+HOST = '127.0.0.1'  # Localhost
+PORT = 12345        # Port to listen on
+
+# Create socket
+server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+server_socket.bind((HOST, PORT))
+server_socket.listen(1)
+print(f"Server listening on {HOST}:{PORT}")
+
+conn, addr = server_socket.accept()
+print(f"Connected by {addr}")
+
+while True:
+    data = conn.recv(1024).decode()
+    if not data or data.lower() == 'exit':
+        print("Client disconnected.")
+        break
+    print(f"Client: {data}")
+    message = input("Server: ")
+    conn.send(message.encode())
+
+conn.close()
+server_socket.close()
+```
+
+### CLIENT:
+```
+import socket
+
+# Server configuration
+HOST = '127.0.0.1'  # Server's IP address
+PORT = 12345        # Server's port
+
+# Create socket
+client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+client_socket.connect((HOST, PORT))
+print("Connected to server. Type 'exit' to quit.")
+
+while True:
+    message = input("Client: ")
+    client_socket.send(message.encode())
+    if message.lower() == 'exit':
+        break
+    data = client_socket.recv(1024).decode()
+    print(f"Server: {data}")
+
+client_socket.close()
+
+```
+## OUTPUT
+### SERVER:
+<img width="944" height="181" alt="image" src="https://github.com/user-attachments/assets/e60aeb2d-fc53-405b-8509-a9955c9efe11" />
+
+### CLIENT:
+<img width="756" height="233" alt="image" src="https://github.com/user-attachments/assets/49ed1a10-7755-43db-83fb-2b0be88a4dd3" />
+
 
 ## Result:
 Thus the study of Socket Programming Completed Successfully
